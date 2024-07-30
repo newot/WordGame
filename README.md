@@ -28,7 +28,7 @@ Zum Spielen des Wortspieles muss Wordgame.c ausgeführt werden.
 
 - Charaktere wie é werden noch nicht ersetzt
 - Abhängig von welchem Text Encoding genutzt wird, sind die Kodierungen von den Charakterzeichen anders. Dieses Programm geht von Unicode (UTF-8) aus
-- Zeilen/Wörter, die mehr als 128+(länge des ersten Wortes, max 128) Charaktere sind, könnten nicht existente Wörter oder Duplikate in die Wortdatenbank hinzufügen. Ich sehe dies nicht als Problem, da man die Anzahl an Charakteren in einem solchen Fall hochschrauben kann. Eine Fehlermeldung, wenn es mehr Charaktere sind, sollte evtl. noch hinzugefügt werden
+- Zeilen/Wörter, die mehr als 128+(Länge des ersten Wortes, max 128) Charaktere sind, könnten nicht existente Wörter oder Duplikate in die Wortdatenbank hinzufügen. Ich sehe dies nicht als Problem, da man die Anzahl an Charakteren in einem solchen Fall hochschrauben kann. Eine Fehlermeldung, wenn es mehr Charaktere sind, sollte evtl. noch hinzugefügt werden
 - Wörter, die nicht einzeln sind, können bei größeren Wortlängen auftauchen. Sonderzeichen wie "(" und "," müssten evtl. aussortiert werden
 
 ## Acknowledgements
