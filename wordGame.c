@@ -5,7 +5,7 @@
  #include <stdbool.h>
 
 static int charCharakterCount = 5;
-static int commentLength = 43;
+static int COMMENT_LENGTH = 43;
 
 //Counting how many lines the document has
 int countLines(int* wordCount){
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     //Figure out wordCount
     int wordCount = 0;
     countLines(&wordCount);
-    wordCount = wordCount - commentLength;
+    wordCount = wordCount - COMMENT_LENGTH;
     if(wordCount<1){
         printf("Zu wenige Worte der Länge vorhanden");
         return 0;
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     FILE *wordList;
     wordList = fopen("output.txt", "r");
     char randomWord[128];
-    skipComment(wordList, commentLength);
+    skipComment(wordList, COMMENT_LENGTH);
 
     //Get a random word
     srand(time(NULL)); 
