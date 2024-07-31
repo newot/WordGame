@@ -93,7 +93,6 @@ int makeWordList(int numberOfCharacters){
         
         char* singleWord = strtok(line, " ");
        
-
         if (singleWord == NULL) {
             continue;
         }
@@ -114,9 +113,6 @@ int makeWordList(int numberOfCharacters){
             fprintf(output, singleWord);
             fprintf(output, "\n");
         }
-
-        //skipping all of the unneeded data after the word
-        
     }
 
     if (line != NULL) {
