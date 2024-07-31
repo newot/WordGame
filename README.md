@@ -16,6 +16,7 @@ Zum Spielen des Wortspieles muss Wordgame.c ausgeführt werden.
 3. Das Buchstabenspiel soll so gut optimiert sein, dass der Nutzer keine Wartezeiten hat. Die Mindestvoraussetzung ist ein Laptop, der bei mir Zuhause rumliegt :D
 4. Der Code zum Generieren der Wortliste muss nicht super optimiert/schnell sein, da der Code nur ein/zweimal läuft, um die neue Datei zu erstellen. 
 5. Wörter mit selteneren Buchstaben ("ß, ö, é") nutzen stattdessen ihre alternative Schreibweise ("ss, oe, e"). Beispiel (groß -> gross, über -> ueber)
+6. Abhängig von welchem Text Encoding genutzt wird, sind die Kodierungen von den Charakterzeichen anders. Dieses Programm geht von Unicode (UTF-8) aus
 
 ## Probleme
 
@@ -26,9 +27,13 @@ Zum Spielen des Wortspieles muss Wordgame.c ausgeführt werden.
 
 ### Erstellung der Wortliste
 
+<<<<<<< HEAD
 - Charaktere wie é werden noch nicht ersetzt
 - Abhängig von welchem Text Encoding genutzt wird, sind die Kodierungen von den Charakterzeichen anders. Dieses Programm geht von Unicode (UTF-8) aus
 - Zeilen/Wörter, die mehr als 128+(Länge des ersten Wortes, max 128) Charaktere sind, könnten nicht existente Wörter oder Duplikate in die Wortdatenbank hinzufügen. Ich sehe dies nicht als Problem, da man die Anzahl an Charakteren in einem solchen Fall hochschrauben kann. Eine Fehlermeldung, wenn es mehr Charaktere sind, sollte evtl. noch hinzugefügt werden
+=======
+- Wörter, die mehr als 128 Charaktere sind, könnten Charaktere wie "ß" nicht substituieren. Da kein Wort in der Wortgrundformenliste solange ist, ist dies für unser Program in Ordnung.
+>>>>>>> 94279d8 (Generelle Änderungen:)
 - Wörter, die nicht einzeln sind, können bei größeren Wortlängen auftauchen. Sonderzeichen wie "(" und "," müssten evtl. aussortiert werden
 
 ## Acknowledgements
