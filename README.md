@@ -6,7 +6,7 @@ Für das Wortspiel ist eine Wortliste nötig. Um während der Laufzeit nicht unn
 
 ## Nutzung
 
-Den Code mit einem Compiler (beispielsweise C++) kompilieren. Sollte die Wordliste ("Output.txt") nicht vorhanden sein oder sollten sie die Länge der Worte verändern wollen, muss makeWordList.c ausgeführt werden.
+Den Code mit einem Compiler (beispielsweise gcc) kompilieren. Sollte die Wordliste ("Output.txt") nicht vorhanden sein oder sollten sie die Länge der Worte verändern wollen, muss makeWordList.c ausgeführt werden.
 
 Zum Spielen des Wortspieles muss Wordgame.c ausgeführt werden.
 
