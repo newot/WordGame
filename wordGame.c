@@ -62,6 +62,7 @@ void checkInput(char randomWord[128], char guessedWord[128], int *amountCorrectP
 int main(int argc, char *argv[]) {
     if(charCharakterCount > 128 || charCharakterCount < 1){
         printf("charCharakterCount out of bounds");
+        exit(1);
     }
 
     //Figure out wordCount
