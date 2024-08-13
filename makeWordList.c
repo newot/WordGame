@@ -24,7 +24,7 @@
             //Checking if character needs to and can be substituted
             result = strstr(singleWord, toBeSubstituted[i]);
             if(result != NULL){
-                if(strlen(singleWord)>WORD_MAX_CHAR_COUNT - strlen(replacementChars[i] - 1)){
+                if(strlen(singleWord) > (WORD_MAX_CHAR_COUNT + strlen(toBeSubstituted[i]) - strlen(replacementChars[i] - 1))){
                     printf("Warning: %s is to long for substitution and will be dropped\n", singleWord);
                     singleWord = "";
                     return;
@@ -80,7 +80,7 @@ int makeWordList(int numberOfCharacters){
     _copyComments(output, inputWordlist, COMMENT_LENGTH);
 
     char *line;
-    size_t lineLength = 32;
+    size_t lineLength = WORD_MAX_CHAR_COUNT;
     size_t getlineReturnValue;
 
     line = (char *)malloc(lineLength * sizeof(char));

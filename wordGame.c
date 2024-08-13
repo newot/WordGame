@@ -36,13 +36,40 @@ void findRandomWord(char randomWord[128], int wordCount, FILE *wordList){
     fgets(randomWord, 128, wordList);
 }
 
+void checkInput(char randomWord[128], char guessedWord[128], int *amountCorrectPositionCharakters, int *amountCorrectCharakters){
+    //randomWordCopy is used to remove letters that are already accounted for
+    //This is done to avoid counting multiple of the same letters twice
+    char *randomWordCopy = strndup(randomWord, charCharakterCount);
+
+    //How many letters are on the correct position
+    for(int j=0; j<charCharakterCount; j++){
+        if(guessedWord[j] == randomWord[j]){
+            (*amountCorrectPositionCharakters)++;
+            randomWordCopy[j] = '.';
+        }
+    }
+
+    //How many letters are in the word, but not on the correct position
+    for(int j=0; j<charCharakterCount; j++){
+        char* search = strchr(randomWordCopy, guessedWord[j]);
+        if(search != NULL){
+            (*amountCorrectCharakters)++;
+            *search = '.';
+        }
+    }
+}
+
 int main(int argc, char *argv[]) {
+    if(charCharakterCount > 128 || charCharakterCount < 1){
+        printf("charCharakterCount out of bounds");
+    }
+
     //Figure out wordCount
     int wordCount = 0;
     countLines(&wordCount);
     wordCount = wordCount - COMMENT_LENGTH;
     if(wordCount<1){
-        printf("Zu wenige Worte der Länge vorhanden");
+        printf("Zu wenige Worte der Länge %i vorhanden", charCharakterCount);
         return 0;
     }
 
@@ -67,27 +94,11 @@ int main(int argc, char *argv[]) {
         {
             scanf("%s", guessedWord);
         }
-        
-        //randomWordCopy is used to remove letters that are already accounted for
-        //This is done to avoid counting multiple of the same letters twice
-        char *randomWordCopy = strndup(randomWord, charCharakterCount); 
-        //How many letters are on the correct position
+
         int amountCorrectPositionCharakters = 0;
-        for(int j=0; j<charCharakterCount; j++){
-            if(guessedWord[j] == randomWord[j]){
-                amountCorrectPositionCharakters++;
-                randomWordCopy[j] = '.';
-            }
-        }
-        //How many letters are in the word, but not on the correct position
         int amountCorrectCharakters = 0;
-        for(int j=0; j<charCharakterCount; j++){
-            char* search = strchr(randomWordCopy, guessedWord[j]);
-            if(search != NULL){
-                amountCorrectCharakters++;
-                *search = '.';
-            }
-        }
+        checkInput(randomWord, guessedWord, &amountCorrectPositionCharakters, &amountCorrectCharakters);
+        
         //Printing information and ending the game if guessed word is correct
         if(amountCorrectPositionCharakters == charCharakterCount){
             printf("Du hast das richtige Wort eraten!");

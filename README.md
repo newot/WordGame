@@ -22,8 +22,7 @@ Zum Spielen des Wortspieles muss Wordgame.c ausgeführt werden.
 
 ### Buchstabenspiel
 
-- Der Input wird noch nicht gefiltert. Man kann also mehr/weniger Buchstaben als die angegebene Länge nutzen. Bei weniger ist es so, dass der Speicher nicht überschrieben wird und somit für unser Programm anscheinend zufällige Buchstaben drinstehen
-- malloc(): corrupted top size (manchmal bei zu wenigen Buchstaben)
+- Der Input wird noch nicht gefiltert. Man kann noch Buchstaben eingeben, die nicht im Wort vorkommen können
 
 ### Erstellung der Wortliste
 
