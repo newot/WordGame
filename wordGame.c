@@ -26,6 +26,16 @@ void skipComment(FILE *wordList, int commentLength){
     }
 }
 
+//Get a random word
+void findRandomWord(char randomWord[128], int wordCount, FILE *wordList){
+    srand(time(NULL)); 
+    int randomNumber = (rand() % wordCount);
+    for(int i=0; i<randomNumber; i++){
+        fgets(randomWord, 128, wordList);
+    }
+    fgets(randomWord, 128, wordList);
+}
+
 int main(int argc, char *argv[]) {
     //Figure out wordCount
     int wordCount = 0;
@@ -39,24 +49,25 @@ int main(int argc, char *argv[]) {
     //Prepare wordList
     FILE *wordList;
     wordList = fopen("output.txt", "r");
+    if(wordList == NULL){
+        printf("Error: Cannot find file: %s\n", wordList);
+        exit(1);
+    }
     char randomWord[128];
     skipComment(wordList, COMMENT_LENGTH);
-
-    //Get a random word
-    srand(time(NULL)); 
-    int randomNumber = (rand() % wordCount);
-    for(int i=0; i<randomNumber; i++){
-        fgets(randomWord, 128, wordList);
-    }
-    fgets(randomWord, 128, wordList);
+    findRandomWord(randomWord, wordCount, wordList);
     fclose(wordList);
 
     //Main gameloop
     printf("Erate das Wort: \n");
     for(int i=0; i<10; i++){
         printf("%i/10\n", i+1);
-        char guessedWord[128];
-        scanf("%s", guessedWord);
+        char guessedWord[128] = "";
+        while (strlen(guessedWord) != charCharakterCount)
+        {
+            scanf("%s", guessedWord);
+        }
+        
         //randomWordCopy is used to remove letters that are already accounted for
         //This is done to avoid counting multiple of the same letters twice
         char *randomWordCopy = strndup(randomWord, charCharakterCount); 
