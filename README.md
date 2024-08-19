@@ -26,8 +26,7 @@ Zum Spielen des Wortspieles muss Wordgame.c ausgeführt werden.
 
 ### Erstellung der Wortliste
 
-- Wörter, die mehr als 128 Charaktere sind, könnten Charaktere wie "ß" nicht substituieren. Da kein Wort in der Wortgrundformenliste solange ist, ist dies für unser Program in Ordnung.
-- Wörter, die nicht einzeln sind, können bei größeren Wortlängen auftauchen. Sonderzeichen wie "(" und "," müssten evtl. aussortiert werden
+- Manche Wörter stehen mir anderen in der selben Zeile, getrennt mit , / ( ). Diese Werden momentan ausgeschlossen
 
 ## Acknowledgements
 
