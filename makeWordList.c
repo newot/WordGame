@@ -1,110 +1,13 @@
- #include <stdio.h>
- #include <stdbool.h>
- #include <string.h>
- #include <ctype.h>
- #include <stdlib.h>
-
-struct binaryTreeNode
-{
-    char* data;
-    struct binaryTreeNode* left;
-    struct binaryTreeNode* right;
-};
-
-struct binaryTreeNode* createBinaryTreeNode(char* data, int* treeSize){
-    struct binaryTreeNode* newNode = malloc(sizeof(struct binaryTreeNode));
-    (*newNode).data = (char *) malloc(100);
-    strcpy((*newNode).data, data);
-    (*newNode).left = NULL;
-    (*newNode).right = NULL;
-    (*treeSize)++;
-    return newNode;
-}
-
-void freeBinaryTree(struct binaryTreeNode* root){
-    if((*root).left != NULL){
-        freeBinaryTree((*root).left);
-        free((*root).left);
-    }
-    if((*root).right != NULL){
-        freeBinaryTree((*root).right);
-        free((*root).right);
-    }
-    free((*root).data);
-}
-
-void searchAndInsertChar(struct binaryTreeNode* root, char* data, int* treeSize){
-    if(strcmp((*root).data, data) > 0){
-        if((*root).left == NULL){
-            (*root).left = createBinaryTreeNode(data, treeSize);
-        }
-        else{
-            searchAndInsertChar((*root).left, data, treeSize);
-        }
-    }
-    else if(strcmp((*root).data, data) < 0){
-        if((*root).right == NULL){
-            (*root).right = createBinaryTreeNode(data, treeSize);
-        }
-        else{
-            searchAndInsertChar((*root).right, data, treeSize);
-        }
-    }
-}
-
-void getAllCharsFromBinaryTree(struct binaryTreeNode* root, char* allChars){
-    if((*root).left != NULL){
-        getAllCharsFromBinaryTree((*root).left, allChars);        
-    }
-    strcat(allChars, ((*root).data));
-    if((*root).right != NULL){
-        getAllCharsFromBinaryTree((*root).right, allChars);    
-    }
-}
-
-void _splitStringToChar(char *inputString, char* outputString, int* stringLength, int*runningCount){    
-    int k = 0;
-    while(((inputString[*runningCount] | 0b00111111) & 0b11111111) == 0b11111111){
-        outputString[k] = inputString[*runningCount];
-        *stringLength--;
-        (*runningCount)++;
-        k++;
-    }
-    outputString[k] = inputString[*runningCount];
-    outputString[k+1] = '\0';
-    (*runningCount)++;
-}
-
-void testSplitStringToChar(){
-    char* inputString = "äa";
-    char* outputString = malloc(sizeof(char));
-    int stringLength = 3;
-    int runningCount = 0;
-    printf("splitString");
-    char* temp = "äa";
-    int f = temp[0];
-    _splitStringToChar(inputString, outputString, &stringLength, &runningCount);
-    printf("ä:%s\n", outputString);
-    _splitStringToChar(inputString, outputString, &stringLength, &runningCount);
-    printf("a:%s\n", outputString);
-    free(outputString);
-}
-
-void searchAndInsertString(struct binaryTreeNode* root, char* inputString, int numberOfCharacters, int* treeSize){
-    int newNumberOfCharacters = numberOfCharacters;
-    int runningCount = 0;
-    while(inputString[runningCount] != '\0'){
-        char singleWordChars[numberOfCharacters];
-        _splitStringToChar(inputString, singleWordChars, &newNumberOfCharacters, &runningCount);
-        searchAndInsertChar(root, singleWordChars, treeSize);
-    }
-}           
-
-//#####################################################################################
-
- static int COMMENT_LENGTH = 43;
- static size_t WORD_MAX_CHAR_COUNT = 128;
- static char *INPUT_WORDLIST = "wordDatabase.txt";
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include "treeWithUniqueChars.h"
+       
+static int COMMENT_LENGTH = 43;
+static size_t WORD_MAX_CHAR_COUNT = 128;
+static char *INPUT_WORDLIST = "wordDatabase.txt";
 
 //copy specific chars from src to dest. Chars to be copied are specified from beginningSrc to endSrc. Chars will be copied to position starting from destIterator
 void _copyOverFrom(char *dest, char *src, int *destIterator, int beginningSrc, int endSrc){
@@ -138,6 +41,21 @@ void _subsituteCharacters(char *singleWord, char *toBeSubstituted[], char *repla
             }
         }while(result!=NULL);
     }
+}
+
+void _checkSubsituteCharactersInput(char *toBeSubstituted[], char *replacementChars[], int numberOfCharsToBeSubstituted){
+    char* replacementCharsInSingleString = malloc(128);
+    for(int i = 0; i < numberOfCharsToBeSubstituted; i++){
+        strcat(replacementCharsInSingleString, replacementChars[i]);
+    }
+    for(int i = 0; i < numberOfCharsToBeSubstituted; i++){
+        char* problemChar = strchr(replacementCharsInSingleString, toBeSubstituted[i]);
+        if(problemChar != NULL){
+            printf("replacement char and char to be Substituted are the same: INFINITE LOOP");
+            exit(1);
+        }
+    }
+    free(replacementCharsInSingleString);
 }
 
 //Copies the first commentLength chars over to the new file. Intended for legal information etc.
@@ -185,7 +103,7 @@ int makeWordList(int numberOfCharacters){
         exit(1);
     }
 
-    static char* outputWordlist = "output.bin";
+    static char* outputWordlist = "output.txt";
     FILE *inputWordlist;
     FILE *output;
 
@@ -209,12 +127,11 @@ int makeWordList(int numberOfCharacters){
 
     line = (char *)malloc(lineLength * sizeof(char));
     if(line == NULL){
-        printf("Error malloc");
+        printf("malloc could not alocate space");
         exit(1);
     }
 
-    int treeSize = 0;
-    struct binaryTreeNode* root = createBinaryTreeNode("o", &treeSize);
+    struct rootNode* root = createRootNode("o");
     
     while((getlineReturnValue = getline(&line, &lineLength, inputWordlist)) != -1) {
 
@@ -244,7 +161,7 @@ int makeWordList(int numberOfCharacters){
 
         _subsituteCharacters(singleWord, toBeSubstituted, replacementChars, numberOfCharsToBeSubstituted);
 
-        searchAndInsertString(root, singleWord, WORD_MAX_CHAR_COUNT, &treeSize);
+        searchAndInsertString(root, singleWord, WORD_MAX_CHAR_COUNT);
 
         if(strlen(singleWord) == numberOfCharacters){
             //writing word to file
@@ -257,7 +174,7 @@ int makeWordList(int numberOfCharacters){
         free(line);
     }
 
-    char* allChars = malloc(treeSize * sizeof(char));
+    char* allChars = malloc((*root).treeSize * sizeof(char));
     allChars[0] = '\0';
     getAllCharsFromBinaryTree(root, allChars);
     printf("Every char included in Dataset: %s\n", allChars);
@@ -276,8 +193,6 @@ int main(int argc, char *argv[]) {
     
     makeWordList(inputNumber);
     printf("Result is in output.txt\n");
-
-    //testSplitStringToChar();
 
     return 0;
 }
