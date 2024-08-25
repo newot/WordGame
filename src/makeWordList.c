@@ -7,7 +7,7 @@
        
 static int COMMENT_LENGTH = 43;
 static size_t WORD_MAX_CHAR_COUNT = 128;
-static char *INPUT_WORDLIST = "wordDatabase.txt";
+static char *INPUT_WORDLIST = "res/wordDatabase.txt";
 
 //copy specific chars from src to dest. Chars to be copied are specified from beginningSrc to endSrc. Chars will be copied to position starting from destIterator
 void _copyOverFrom(char *dest, char *src, int *destIterator, int beginningSrc, int endSrc){
@@ -49,7 +49,7 @@ void _checkSubsituteCharactersInput(char *toBeSubstituted[], char *replacementCh
         strcat(replacementCharsInSingleString, replacementChars[i]);
     }
     for(int i = 0; i < numberOfCharsToBeSubstituted; i++){
-        char* problemChar = strchr(replacementCharsInSingleString, toBeSubstituted[i]);
+        char* problemChar = strchr(replacementCharsInSingleString, *(toBeSubstituted[i]));
         if(problemChar != NULL){
             printf("replacement char and char to be Substituted are the same: INFINITE LOOP");
             exit(1);

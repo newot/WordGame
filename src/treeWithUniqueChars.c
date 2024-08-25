@@ -1,16 +1,9 @@
 #include "treeWithUniqueChars.h"
 
- static size_t WORD_MAX_CHAR_COUNT = 128;
-
-struct _binaryTreeNode
-{
-    char* data;
-    struct _binaryTreeNode* left;
-    struct _binaryTreeNode* right;
-};
+static size_t WORD_MAX_CHAR_COUNT = 128;
 
 //creates a generic tree node
-struct _binaryTreeNode* _createBinaryTreeNode(char* data, int* treeSize){
+struct _binaryTreeNode* _createBinaryTreeNode(const char* data, int* treeSize){
     struct _binaryTreeNode* newNode = malloc(sizeof(struct _binaryTreeNode));
     if(newNode == NULL){
         printf("malloc could not alocate space");
@@ -29,7 +22,7 @@ struct _binaryTreeNode* _createBinaryTreeNode(char* data, int* treeSize){
 }
 
 //creates a root node
-struct rootNode* createRootNode(char* data){
+struct rootNode* createRootNode(const char* data){
     struct rootNode* newNode = malloc(sizeof(struct rootNode));
     if(newNode == NULL){
         printf("malloc could not alocate space");
@@ -70,8 +63,8 @@ void _getAllCharsFromBinaryTreeNode(struct _binaryTreeNode* node, char* allChars
 }
 
 void getAllCharsFromBinaryTree(struct rootNode* root, char* allChars){
+    allChars[0] = '\0';
     _getAllCharsFromBinaryTreeNode((*root).node, allChars);
-    printf("%s\n", allChars);
 }
 
 //Inserts char into tree if char is not already in tree
@@ -95,7 +88,7 @@ void _searchAndInsertChar(struct _binaryTreeNode* root, char* data, int* treeSiz
 }
 
 //ONLY USE THIS FUNCTION STARTING FROM runningCount = 0.  Iterates runningCount itself. Returns char on position runningCount. Supports multibyte chars
-void _splitStringToChar(char *inputString, char* outputString, int* stringLength, int*runningCount){    
+void _splitStringToChar(const char *inputString, char* outputString, int* stringLength, int*runningCount){    
     int k = 0;
     while(((inputString[*runningCount] | 0b00111111) & 0b11111111) == 0b11111111){
         outputString[k] = inputString[*runningCount];
@@ -115,7 +108,7 @@ void _splitStringToChar(char *inputString, char* outputString, int* stringLength
 }
 
 //Split of chars from an inputString and stores unique chars in a binary tree
-void searchAndInsertString(struct rootNode* root, char* inputString, int numberOfCharacters){
+void searchAndInsertString(struct rootNode* root, const char* inputString, int numberOfCharacters){
     int newNumberOfCharacters = numberOfCharacters;
     int runningCount = 0;
     while(inputString[runningCount] != '\0'){
@@ -124,20 +117,3 @@ void searchAndInsertString(struct rootNode* root, char* inputString, int numberO
         _searchAndInsertChar((*root).node, singleWordChars, &((*root).treeSize));
     }
 }    
-
-//################################################
-
-void testSplitStringToChar(){
-    char* inputString = "äa";
-    char* outputString = malloc(sizeof(char));
-    int stringLength = 3;
-    int runningCount = 0;
-    printf("splitString");
-    char* temp = "äa";
-    int f = temp[0];
-    _splitStringToChar(inputString, outputString, &stringLength, &runningCount);
-    printf("ä:%s\n", outputString);
-    _splitStringToChar(inputString, outputString, &stringLength, &runningCount);
-    printf("a:%s\n", outputString);
-    free(outputString);
-}

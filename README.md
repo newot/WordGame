@@ -6,7 +6,7 @@ Für das Wortspiel ist eine Wortliste nötig. Um während der Laufzeit nicht unn
 
 ## Nutzung
 
-Den Code mit einem Compiler (beispielsweise gcc) kompilieren. Sollte die Wordliste ("Output.txt") nicht vorhanden sein oder sollten sie die Länge der Worte verändern wollen, muss makeWordList.c ausgeführt werden.
+Der Code muss mit einem Compiler (beispielsweise gcc) kompiliert werden. Sollte die Wordliste ("Output.txt") nicht vorhanden sein oder sollten sie die Länge der Worte verändern wollen, muss makeWordList.c ausgeführt werden.
 
 Zum Spielen des Wortspieles muss Wordgame.c ausgeführt werden.
 
@@ -38,3 +38,7 @@ http://www.ids-mannheim.de/derewo, \
 © Institut für Deutsche Sprache,  \
 Programmbereich Korpuslinguistik, \
 Mannheim, Deutschland, 2013.
+
+#### GoogleTest
+
+This Project uses GoogleTest as its testing framework. GoogleTest is automatically downloaded via CMake.
