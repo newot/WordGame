@@ -21,16 +21,23 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 
-add_executable(makeWordList ./src/makeWordList.c)
-target_sources(makeWordList PRIVATE ./src/treeWithUniqueChars.c)
+add_library(treeWithUniqueChars ${CMAKE_CURRENT_LIST_DIR}/src/treeWithUniqueChars.c)
+target_sources(treeWithUniqueChars PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src/options.h)
 
-add_executable(WordGame ./src/wordGame.c)
+add_library(makeWordList ${CMAKE_CURRENT_LIST_DIR}/src/makeWordList.c)
+target_link_libraries(makeWordList treeWithUniqueChars)
+target_sources(makeWordList PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src/options.h)
+
+add_executable(WordGame ${CMAKE_CURRENT_LIST_DIR}/src/wordGame.c)
+target_link_libraries(WordGame makeWordList)
+target_sources(WordGame PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src/options.h)
+
 
 # Testing
 enable_testing()
 
-add_executable(test_treeWithUniqueChars ./unittest/test_treeWithUniqueChars.cpp)
-target_sources(test_treeWithUniqueChars PRIVATE ./src/treeWithUniqueChars.c)
+add_executable(test_treeWithUniqueChars ${CMAKE_CURRENT_LIST_DIR}/unittest/test_treeWithUniqueChars.cpp)
+target_link_libraries(test_treeWithUniqueChars treeWithUniqueChars)
 target_link_libraries(test_treeWithUniqueChars GTest::gtest_main)
 
 include(GoogleTest)

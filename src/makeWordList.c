@@ -1,13 +1,7 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include "treeWithUniqueChars.h"
-       
-static int COMMENT_LENGTH = 43;
-static size_t WORD_MAX_CHAR_COUNT = 128;
-static char *INPUT_WORDLIST = "res/wordDatabase.txt";
+#include "makeWordList.h"
+
+
+
 
 //copy specific chars from src to dest. Chars to be copied are specified from beginningSrc to endSrc. Chars will be copied to position starting from destIterator
 void _copyOverFrom(char *dest, char *src, int *destIterator, int beginningSrc, int endSrc){
@@ -18,7 +12,8 @@ void _copyOverFrom(char *dest, char *src, int *destIterator, int beginningSrc, i
 }
 
 //Replaces chars specified in toBeSubstituted with whatever is in replacementChars.
-void _subsituteCharacters(char *singleWord, char *toBeSubstituted[], char *replacementChars[], int numberOfCharsToBeSubstituted){
+//WARNING: Make sure singleWord has WORD_MAX_CHAR_COUNT memory allocated!!! TODO fixme
+void subsituteCharacters(char *singleWord, char *toBeSubstituted[], char *replacementChars[], int numberOfCharsToBeSubstituted){
     char* result;
     for(int i=0;i<numberOfCharsToBeSubstituted;i++){
         do{
@@ -34,12 +29,18 @@ void _subsituteCharacters(char *singleWord, char *toBeSubstituted[], char *repla
                 char singleWordUnedited[WORD_MAX_CHAR_COUNT];
                 strcpy(singleWordUnedited, singleWord);
                 int destIterator = 0;
-                _copyOverFrom(singleWord, singleWordUnedited, &destIterator, 0, result - singleWord);
+                if(result - singleWord > 0){
+                    _copyOverFrom(singleWord, singleWordUnedited, &destIterator, 0, result - singleWord);
+                }
                 int d = destIterator + strlen(toBeSubstituted[i]);
                 _copyOverFrom(singleWord, replacementChars[i], &destIterator, 0, strlen(replacementChars[i]));
-                _copyOverFrom(singleWord, singleWordUnedited, &destIterator, d, WORD_MAX_CHAR_COUNT-destIterator);
+                if(destIterator > WORD_MAX_CHAR_COUNT && destIterator < 0){
+                    printf("something went wrong while substituting");
+                    exit(1);
+                }
+                _copyOverFrom(singleWord, singleWordUnedited, &destIterator, d, WORD_MAX_CHAR_COUNT-destIterator);               
             }
-        }while(result!=NULL);
+        }while(result != NULL);
     }
 }
 
@@ -58,15 +59,9 @@ void _checkSubsituteCharactersInput(char *toBeSubstituted[], char *replacementCh
     free(replacementCharsInSingleString);
 }
 
-//Copies the first commentLength chars over to the new file. Intended for legal information etc.
-void _copyComments(FILE *output, FILE *inputWordlist, int commentLength){
-    for(int i=0;i<commentLength;i++){
-        char singleWord[128] = "";
-        fgets(singleWord, 128, inputWordlist);
-        fprintf(output, singleWord);
-    }
-}
 
+
+// Copies comments over to new file. 
 bool _checkIfAndCopyComment(FILE *output, char* singleWord){
     if(singleWord[0]=='#'){
         fprintf(output, singleWord);
@@ -93,7 +88,7 @@ void _tolowerString(char* singleWord, int wordLength){
     }
 }
 
-int makeWordList(int numberOfCharacters){
+int makeWordList(int numberOfCharacters, char *outputWordlist){
     if(numberOfCharacters > WORD_MAX_CHAR_COUNT - 2){
         printf("Error: Code does not support character counts above %i\n", WORD_MAX_CHAR_COUNT - 2);
         exit(1);
@@ -102,8 +97,7 @@ int makeWordList(int numberOfCharacters){
         printf("Error: Code does not support character counts below 1\n");
         exit(1);
     }
-
-    static char* outputWordlist = "output.txt";
+    
     FILE *inputWordlist;
     FILE *output;
 
@@ -119,7 +113,7 @@ int makeWordList(int numberOfCharacters){
         exit(1);
     }
 
-    //_copyComments(output, inputWordlist, COMMENT_LENGTH);
+    fprintf(output, "This is a modified version only including words that are %i characters long!\n", numberOfCharacters);
 
     char *line;
     size_t lineLength = WORD_MAX_CHAR_COUNT;
@@ -159,7 +153,7 @@ int makeWordList(int numberOfCharacters){
         char *replacementChars[] = {"ss", "oe", "ue","ae", "oe", "ue","ae", "e", "e", "e", "c", "i", "o"};
         //TODO insert error if toBeSubstituted/replacementChars unequal to numberOfCharsToBeSubstituted
 
-        _subsituteCharacters(singleWord, toBeSubstituted, replacementChars, numberOfCharsToBeSubstituted);
+        subsituteCharacters(singleWord, toBeSubstituted, replacementChars, numberOfCharsToBeSubstituted);
 
         searchAndInsertString(root, singleWord, WORD_MAX_CHAR_COUNT);
 
@@ -174,25 +168,16 @@ int makeWordList(int numberOfCharacters){
         free(line);
     }
 
-    char* allChars = malloc((*root).treeSize * sizeof(char));
+    char* allChars = malloc(2 * (*root).treeSize * sizeof(char));
     allChars[0] = '\0';
     getAllCharsFromBinaryTree(root, allChars);
-    printf("Every char included in Dataset: %s\n", allChars);
+    fprintf(output, "!%s",allChars);
+    //printf("Every char included in Dataset: %s\n", allChars);
+
     free(allChars);
     freeBinaryTree(root);
 
     fclose(output);
     fclose(inputWordlist); 
-    return 0;
-}
-
-int main(int argc, char *argv[]) {
-    printf("Number of Characters:");
-    int inputNumber = 0;
-    scanf("%i", &inputNumber);
-    
-    makeWordList(inputNumber);
-    printf("Result is in output.txt\n");
-
     return 0;
 }

@@ -30,7 +30,7 @@ struct _binaryTreeNode* _createBinaryTreeNode(const char* data, int* treeSize);
 void _freeBinaryTreeRekursivee(struct _binaryTreeNode* node);
 void _getAllCharsFromBinaryTreeNode(struct _binaryTreeNode* node, char* allChars);
 void _searchAndInsertChar(struct _binaryTreeNode* root, char* data, int* treeSize);
-void _splitStringToChar(const char *inputString, char *outputString, int *stringLength, int *runningCount);
+void splitStringToChar(const char *inputString, char *outputString, int *stringLength, int *runningCount);
 }
 
 #endif

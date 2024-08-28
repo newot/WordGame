@@ -1,7 +1,5 @@
 #include "treeWithUniqueChars.h"
 
-static size_t WORD_MAX_CHAR_COUNT = 128;
-
 //creates a generic tree node
 struct _binaryTreeNode* _createBinaryTreeNode(const char* data, int* treeSize){
     struct _binaryTreeNode* newNode = malloc(sizeof(struct _binaryTreeNode));
@@ -56,7 +54,13 @@ void _getAllCharsFromBinaryTreeNode(struct _binaryTreeNode* node, char* allChars
     if((*node).left != NULL){
         _getAllCharsFromBinaryTreeNode((*node).left, allChars);        
     }
-    strcat(allChars, ((*node).data));
+    char* charPlusSpace = malloc(sizeof((*node).data + 1));
+    if(charPlusSpace == NULL){
+        printf("malloc could not allocate space");
+    }
+    sprintf(charPlusSpace, " %s",((*node).data));
+    strcat(allChars, charPlusSpace);
+    free(charPlusSpace);
     if((*node).right != NULL){
         _getAllCharsFromBinaryTreeNode((*node).right, allChars);    
     }
@@ -88,7 +92,7 @@ void _searchAndInsertChar(struct _binaryTreeNode* root, char* data, int* treeSiz
 }
 
 //ONLY USE THIS FUNCTION STARTING FROM runningCount = 0.  Iterates runningCount itself. Returns char on position runningCount. Supports multibyte chars
-void _splitStringToChar(const char *inputString, char* outputString, int* stringLength, int*runningCount){    
+void splitStringToChar(const char *inputString, char* outputString, int* stringLength, int*runningCount){    
     int k = 0;
     while(((inputString[*runningCount] | 0b00111111) & 0b11111111) == 0b11111111){
         outputString[k] = inputString[*runningCount];
@@ -113,7 +117,7 @@ void searchAndInsertString(struct rootNode* root, const char* inputString, int n
     int runningCount = 0;
     while(inputString[runningCount] != '\0'){
         char singleWordChars[numberOfCharacters];
-        _splitStringToChar(inputString, singleWordChars, &newNumberOfCharacters, &runningCount);
+        splitStringToChar(inputString, singleWordChars, &newNumberOfCharacters, &runningCount);
         _searchAndInsertChar((*root).node, singleWordChars, &((*root).treeSize));
     }
 }    

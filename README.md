@@ -6,9 +6,7 @@ Für das Wortspiel ist eine Wortliste nötig. Um während der Laufzeit nicht unn
 
 ## Nutzung
 
-Der Code muss mit einem Compiler (beispielsweise gcc) kompiliert werden. Sollte die Wordliste ("Output.txt") nicht vorhanden sein oder sollten sie die Länge der Worte verändern wollen, muss makeWordList.c ausgeführt werden.
-
-Zum Spielen des Wortspieles muss Wordgame.c ausgeführt werden.
+Der Code muss mit einem Compiler (beispielsweise gcc) kompiliert werden. Danach muss Wordgame.c ausgeführt im Termnal werden. Das Program wurde für Linux geschrieben und ich erwarte, dass es nur mit Linux funktioniert.
 
 ## Weitere Voraussetzungen
 1. Die Länge des Wortes soll vom Benutzer festgelegt werden können
@@ -19,10 +17,6 @@ Zum Spielen des Wortspieles muss Wordgame.c ausgeführt werden.
 6. Abhängig von welchem Text Encoding genutzt wird, sind die Kodierungen von den Charakterzeichen anders. Dieses Programm geht von Unicode (UTF-8) aus
 
 ## Probleme
-
-### Buchstabenspiel
-
-- Der Input wird noch nicht gefiltert. Man kann noch Buchstaben eingeben, die nicht im Wort vorkommen können
 
 ### Erstellung der Wortliste
 
