@@ -6,7 +6,7 @@ Für das Wortspiel ist eine Wortliste nötig. Um während der Laufzeit nicht unn
 
 ## Nutzung
 
-Der Code muss mit einem Compiler (beispielsweise gcc) kompiliert werden. Danach muss Wordgame.c ausgeführt im Termnal werden. Das Program wurde für Linux geschrieben und ich erwarte, dass es nur mit Linux funktioniert.
+Der Code muss mit einem Compiler (beispielsweise gcc) kompiliert werden. Danach muss Wordgame.c im Termnal ausgeführt werden. Das Program wurde für Linux geschrieben und ich erwarte, dass es nur mit Linux funktioniert.
 
 ## Weitere Voraussetzungen
 1. Die Länge des Wortes soll vom Benutzer festgelegt werden können
